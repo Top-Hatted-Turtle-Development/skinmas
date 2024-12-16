@@ -40,24 +40,31 @@
             background: rgba(255, 255, 255, 0.8);
         }
 
-        button {
-            background-image: url("https://static.vecteezy.com/system/resources/thumbnails/009/733/160/small/christmas-candy-cane-striped-seamless-pattern-christmas-candycane-background-with-red-and-green-stripes-peppermint-caramel-diagonal-print-xmas-traditional-wrapping-texture-illustration-vector.jpg");
-            border: none;
-            border-radius: 5px;
-            color: #ffffff;
-            font-size: 1.2em;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
+button {
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 1.2em;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    outline: none; /* Remove yellow outline */
+}
 
-        button:hover {
-            transform: scale(1.05);
-        }
+button:hover {
+    transform: scale(1.05);
+    background-color: #008000; /* Christmas green on hover */
+}
 
-        button:active {
-            transform: scale(1);
-        }
+button:active {
+    transform: scale(1);
+    background-color: #ff6347; /* Tomato red for active state */
+}
+
+button:focus {
+    outline: none; /* Remove outline when the button is focused */
+}
+
 
         #button-container {
             display: none;
@@ -88,18 +95,6 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-
-        .christmas-lights {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            height: 100px;
-            background: url('https://coolboy67yt.github.io/stuffs/christmas-lights.png') repeat-x;
-            background-size: cover;
-            z-index: 10;
         }
     </style>
     <script src="snowstorm.js"></script>
