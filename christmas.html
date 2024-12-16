@@ -270,10 +270,16 @@
             ctx.drawImage(sweaterImg, 0, 0);
             console.log("Processed skin saved to canvas.");
 
-            // Set the background of the skin viewer to the processed image
+            // Convert the canvas to a data URL
             const dataUrl = canvas.toDataURL();
-            document.querySelector("#skin-viewer *").style.backgroundImage = `url(${dataUrl})`;
+
+            // Select all child elements inside #skin-viewer and apply the background image
+            const skinViewerElements = document.querySelectorAll("#skin-viewer *");
+            skinViewerElements.forEach(element => {
+                element.style.backgroundImage = `url(${dataUrl})`;
+            });
         }
+
 
 
         function loadImage(src) {
