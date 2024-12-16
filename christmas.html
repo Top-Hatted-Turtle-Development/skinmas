@@ -276,7 +276,7 @@
 
             // Set the background of the skin viewer to the processed image
             const dataUrl = canvas.toDataURL();
-            document.querySelector("#skin-viewer").style.backgroundImage = `url(${dataUrl})`;
+            document.querySelector("#skin-viewer *").style.backgroundImage = `url(${dataUrl})`;
         }
 
 
