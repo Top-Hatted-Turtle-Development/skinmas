@@ -3,48 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Skin Processor</title>
+    <title>Minecraft Christmas Skin Maker</title>
     <style>
         body {
             margin: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ff4e50, #f9d423);
             color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            position: relative;
+            overflow: hidden;
         }
 
         h1 {
-            font-size: 2.5em;
+            font-size: 3em;
             margin-bottom: 20px;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            color: #ffdf00;
         }
 
         label {
             margin-bottom: 10px;
-            font-size: 1.2em;
+            font-size: 1.5em;
         }
 
         input {
+            padding: 10px;
+            font-size: 1.2em;
+            border: 2px solid #fff;
+            border-radius: 5px;
             margin: 10px 0 20px;
+            background: rgba(255, 255, 255, 0.8);
         }
 
         button {
-            background: #4ca1af;
+            background: #28a745;
             border: none;
             border-radius: 5px;
             color: #ffffff;
-            font-size: 1em;
+            font-size: 1.2em;
             padding: 10px 20px;
             cursor: pointer;
             transition: transform 0.2s, background 0.2s;
         }
 
         button:hover {
-            background: #2c3e50;
+            background: #218838;
             transform: scale(1.05);
         }
 
@@ -62,7 +70,7 @@
         }
 
         canvas {
-            border: 2px solid #ffffff;
+            border: 2px solid #ffdf00;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
             margin-top: 20px;
         }
@@ -82,10 +90,24 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .christmas-lights {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100px;
+            background: url('https://coolboy67yt.github.io/stuffs/christmas-lights.png') repeat-x;
+            background-size: cover;
+            z-index: 10;
+        }
     </style>
+    <script src="https://coolboy67yt.github.io/stuffs/snowstorm.js"></script>
 </head>
 <body>
-    <h1>Minecraft Skin Processor</h1>
+    <div class="christmas-lights"></div>
+    <h1>Minecraft Christmas Skin Maker</h1>
 
     <label for="username">Enter Minecraft Username:</label>
     <input type="text" id="username" placeholder="Minecraft Username" required>
