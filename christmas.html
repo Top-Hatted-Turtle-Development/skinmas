@@ -41,32 +41,31 @@
             background: rgba(255, 255, 255, 0.8);
         }
 
-button {
-    background-color: #ff6347;
-    border: none;
-    border-radius: 5px;
-    color: #ffffff;
-    font-size: 1.2em;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s;
-    outline: none; /* Remove yellow outline */
-}
+        button {
+            background-color: #ff6347;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            outline: none; /* Remove yellow outline */
+        }
 
-button:hover {
-    transform: scale(1.05);
-    background-color: #008000; /* Christmas green on hover */
-}
+        button:hover {
+            transform: scale(1.05);
+            background-color: #008000; /* Christmas green on hover */
+        }
 
-button:active {
-    transform: scale(1);
-    background-color: #ff6347; /* Tomato red for active state */
-}
+        button:active {
+            transform: scale(1);
+            background-color: #ff6347; /* Tomato red for active state */
+        }
 
-button:focus {
-    outline: none; /* Remove outline when the button is focused */
-}
-
+        button:focus {
+            outline: none; /* Remove outline when the button is focused */
+        }
 
         #button-container {
             display: none;
@@ -98,6 +97,35 @@ button:focus {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Skin Viewer CSS */
+        #skin-viewer * {
+            background-image: url('skin_modern.png');
+        }
+
+        #skin-viewer {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .player {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .head, .body, .left-arm, .right-arm, .left-leg, .right-leg {
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            margin: 5px;
+        }
+
+        .accessory {
+            position: relative;
+        }
     </style>
     <script src="snowstorm.js"></script>
 </head>
@@ -116,6 +144,18 @@ button:focus {
     <div id="button-container">
         <button id="downloadButton">Download</button>
         <button id="cancelButton">Cancel</button>
+    </div>
+
+    <!-- Skin Viewer Section -->
+    <div id="skin-viewer" class="mc-skin-viewer-11x spin">
+        <div class="player">
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="left-arm"></div>
+            <div class="right-arm"></div>
+            <div class="left-leg"></div>
+            <div class="right-leg"></div>
+        </div>
     </div>
 
     <script>
