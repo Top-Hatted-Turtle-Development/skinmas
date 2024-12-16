@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Skin Processor</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        input {
+            margin: 10px 0 20px;
+        }
+
+        button {
+            background: #4ca1af;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        button:hover {
+            background: #2c3e50;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(1);
+        }
+
+        #button-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #button-container button {
+            margin: 0 10px;
+        }
+
+        canvas {
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            margin-top: 20px;
+        }
+
+        .loader {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #ffffff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin-top: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Minecraft Skin Processor</h1>
+
+    <label for="username">Enter Minecraft Username:</label>
+    <input type="text" id="username" placeholder="Minecraft Username" required>
+
+    <button id="processButton">Process Skin</button>
+    <div class="loader" id="loader"></div>
+
+    <canvas id="outputCanvas"></canvas>
+
+    <div id="button-container">
+        <button id="downloadButton">Download</button>
+        <button id="cancelButton">Cancel</button>
+    </div>
+
+    <script>
+        async function downloadSkin(username) {
+            const url = `https://starlightskins.lunareclipse.studio/render/skin/${username}/default`;
+            const response = await fetch(url);
+
+            if (response.ok) {
+                const blob = await response.blob();
+                console.log(`Downloaded skin for ${username}.`);
+                return blob;
+            } else {
+                throw new Error(`Failed to download skin for ${username}. HTTP ${response.status}`);
+            }
+        }
+
+        async function processSkin(skinBlob, sweaterImg, outputCanvas) {
+            const skinImg = await loadImage(URL.createObjectURL(skinBlob));
+
+            const canvas = outputCanvas;
+            const ctx = canvas.getContext("2d");
+
+            canvas.width = skinImg.width;
+            canvas.height = skinImg.height;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.drawImage(skinImg, 0, 0);
+
+            const areasToClear = [
+                [16, 16, 32, 32],  
+                [40, 16, 56, 32],  
+                [32, 48, 40, 64],  
+                [48, 48, 56, 64],  
+                [48, 16, 56, 32],  
+                [32, 16, 40, 32]   
+            ];
+
+            areasToClear.forEach(area => {
+                const [x1, y1, x2, y2] = area;
+                ctx.clearRect(x1, y1, x2 - x1, y2 - y1);
+            });
+
+            ctx.drawImage(sweaterImg, 0, 0);
+            console.log("Processed skin saved to canvas.");
+        }
+
+        function loadImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = src;
+            });
+        }
+
+        async function main() {
+            const usernameInput = document.getElementById("username");
+            const loader = document.getElementById("loader");
+
+            const username = usernameInput.value.trim();
+            if (!username) {
+                alert("Please enter a username.");
+                return;
+            }
+
+            try {
+                loader.style.display = "block";
+
+                const skinBlob = await downloadSkin(username);
+                const sweaterImg = await loadImage("https://coolboy67yt.github.io/stuffs/sweater.png");
+
+                const outputCanvas = document.getElementById("outputCanvas");
+                await processSkin(skinBlob, sweaterImg, outputCanvas);
+
+                document.getElementById("button-container").style.display = "flex";
+                console.log("Skin processing complete.");
+            } catch (e) {
+                console.error(`An error occurred: ${e.message}`);
+            } finally {
+                loader.style.display = "none";
+            }
+        }
+
+        document.getElementById("processButton").addEventListener("click", main);
+
+        document.getElementById("downloadButton").addEventListener("click", () => {
+            const canvas = document.getElementById("outputCanvas");
+            const link = document.createElement("a");
+            link.download = "processed-skin.png";
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+
+        document.getElementById("cancelButton").addEventListener("click", () => {
+            const canvas = document.getElementById("outputCanvas");
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById("button-container").style.display = "none";
+        });
+    </script>
+</body>
+</html>
