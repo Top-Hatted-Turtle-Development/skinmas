@@ -118,103 +118,60 @@ button:focus {
     </div>
 
     <script>
-        async function downloadSkin(username) {
-            const url = `https://starlightskins.lunareclipse.studio/render/skin/${username}/default`;
-            const response = await fetch(url);
+async function downloadSkin(username) {
+    const url = `https://starlightskins.lunareclipse.studio/render/skin/${username}/default`;
+    const response = await fetch(url);
 
-            if (response.ok) {
-                const blob = await response.blob();
-                console.log(`Downloaded skin for ${username}.`);
-                return blob;
-            } else {
-                throw new Error(`Failed to download skin for ${username}. HTTP ${response.status}`);
-            }
-        }
+    if (response.ok) {
+        const blob = await response.blob();
+        console.log(`Downloaded skin for ${username}.`);
+        return blob;
+    } else {
+        throw new Error(`Failed to download skin for ${username}. HTTP ${response.status}`);
+    }
+}
 
-        async function processSkin(skinBlob, sweaterImg, outputCanvas) {
-            const skinImg = await loadImage(URL.createObjectURL(skinBlob));
+async function processSkin(skinBlob, sweaterImg, outputCanvas) {
+    const skinImg = await loadImage(URL.createObjectURL(skinBlob));
 
-            const canvas = outputCanvas;
-            const ctx = canvas.getContext("2d");
+    const canvas = outputCanvas;
+    const ctx = canvas.getContext("2d");
 
-            canvas.width = skinImg.width;
-            canvas.height = skinImg.height;
+    canvas.width = skinImg.width;
+    canvas.height = skinImg.height;
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            ctx.drawImage(skinImg, 0, 0);
+    ctx.drawImage(skinImg, 0, 0);
 
-            const areasToClear = [
-                [16, 16, 32, 32],  
-                [40, 16, 56, 32],  
-                [32, 48, 40, 64],  
-                [48, 48, 56, 64],  
-                [48, 16, 56, 32],  
-                [32, 16, 40, 32]   
-            ];
+    const areasToClear = [
+        [16, 16, 32, 32],  
+        [40, 16, 56, 32],  
+        [32, 48, 40, 64],  
+        [48, 48, 56, 64],  
+        [48, 16, 56, 32],  
+        [32, 16, 40, 32]   
+    ];
 
-            areasToClear.forEach(area => {
-                const [x1, y1, x2, y2] = area;
-                ctx.clearRect(x1, y1, x2 - x1, y2 - y1);
-            });
+    areasToClear.forEach(area => {
+        const [x1, y1, x2, y2] = area;
+        ctx.clearRect(x1, y1, x2 - x1, y2 - y1);
+    });
 
-            ctx.drawImage(sweaterImg, 0, 0);
-            console.log("Processed skin saved to canvas.");
-        }
+    ctx.drawImage(sweaterImg, 0, 0);
+    console.log("Processed skin saved to canvas.");
+}
 
-        function loadImage(src) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.onload = () => resolve(img);
-                img.onerror = reject;
-                img.src = src;
-            });
-        }
+function loadImage(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";  // This ensures the image is not tainted
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+    });
+}
 
-        async function main() {
-            const usernameInput = document.getElementById("username");
-            const loader = document.getElementById("loader");
-
-            const username = usernameInput.value.trim();
-            if (!username) {
-                alert("Please enter a username.");
-                return;
-            }
-
-            try {
-                loader.style.display = "block";
-
-                const skinBlob = await downloadSkin(username);
-                const sweaterImg = await loadImage("https://coolboy67yt.github.io/stuffs/sweater.png");
-
-                const outputCanvas = document.getElementById("outputCanvas");
-                await processSkin(skinBlob, sweaterImg, outputCanvas);
-
-                document.getElementById("button-container").style.display = "flex";
-                console.log("Skin processing complete.");
-            } catch (e) {
-                console.error(`An error occurred: ${e.message}`);
-            } finally {
-                loader.style.display = "none";
-            }
-        }
-
-        document.getElementById("processButton").addEventListener("click", main);
-
-        document.getElementById("downloadButton").addEventListener("click", () => {
-            const canvas = document.getElementById("outputCanvas");
-            const link = document.createElement("a");
-            link.download = "processed-skin.png";
-            link.href = canvas.toDataURL();
-            link.click();
-        });
-
-        document.getElementById("cancelButton").addEventListener("click", () => {
-            const canvas = document.getElementById("outputCanvas");
-            const ctx = canvas.getContext("2d");
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            document.getElementById("button-container").style.display = "none";
-        });
     </script>
 </body>
 </html>
