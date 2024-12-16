@@ -277,12 +277,14 @@
             // Convert the canvas to a data URL
             const dataUrl = canvas.toDataURL();
 
-            // Select all child elements inside #skin-viewer and apply the background image
+            // Select all child elements inside #skin-viewer and apply the background image and display property
             const skinViewerElements = document.querySelectorAll("#skin-viewer *");
             skinViewerElements.forEach(element => {
                 element.style.backgroundImage = `url(${dataUrl})`;
+                element.style.display = "block";  // Set the display property to 'block' (or any other value you need)
             });
         }
+
 
 
 
